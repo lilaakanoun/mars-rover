@@ -35,3 +35,31 @@ Final co-ordinates and heading of each rover:
 1 3 N
 5 1 E
 ```
+
+## Requirements
+
+- Java 11+
+- Maven 3
+
+## Build
+
+```
+mvn clean verify
+```
+
+Runs the tests and builds `target/rover.jar`.
+
+## Run
+
+```
+java -jar target/rover.jar input.txt
+```
+
+## Project structure
+
+```
+src/main/java/com/lilakanoun/marsrover
+├── Application.java   reads the input file and prints the result
+├── domain/            Heading, Instruction, Position, Plateau, Rover
+└── parser/            InputParser
+```
