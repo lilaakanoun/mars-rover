@@ -1,0 +1,84 @@
+.page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.panel {
+  flex: 1;
+  min-width: 320px;
+}
+
+.size {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.size span {
+  width: 60px;
+}
+
+.start {
+  display: flex;
+  gap: 8px;
+}
+
+.start mat-form-field {
+  width: 90px;
+}
+
+.start mat-form-field.heading {
+  width: 120px;
+}
+
+h3 {
+  margin-top: 16px;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.grid {
+  display: inline-block;
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.label {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+}
+
+.file {
+  width: 100%;
+}
+
+.error {
+  color: #f44336;
+}
