@@ -2,23 +2,33 @@ package com.lilakanoun.marsrover.domain;
 
 public class Rover {
 
-    private Position position;
+    private int x;
+    private int y;
+    private Heading heading;
 
     public Rover(Position position) {
-        this.position = position;
+        this.x = position.getX();
+        this.y = position.getY();
+        this.heading = position.getHeading();
     }
 
     public Position getPosition() {
-        return position;
+        return new Position(x, y, heading);
     }
 
-    public void execute(Instruction instruction) {
+    public void execute(String instructions) {
+        for (int i = 0; i < instructions.length(); i++) {
+            apply(Instruction.fromLetter(instructions.charAt(i)));
+        }
+    }
+
+    private void apply(Instruction instruction) {
         switch (instruction) {
             case L:
-                spinLeft();
+                heading = heading.left();
                 break;
             case R:
-                spinRight();
+                heading = heading.right();
                 break;
             case M:
                 move();
@@ -26,19 +36,7 @@ public class Rover {
         }
     }
 
-    private void spinLeft() {
-        position = new Position(position.getX(), position.getY(), position.getHeading().left());
-    }
-
-    private void spinRight() {
-        position = new Position(position.getX(), position.getY(), position.getHeading().right());
-    }
-
     private void move() {
-        int x = position.getX();
-        int y = position.getY();
-        Heading heading = position.getHeading();
-
         switch (heading) {
             case N:
                 // facing north: go up
@@ -57,7 +55,5 @@ public class Rover {
                 x = x - 1;
                 break;
         }
-
-        position = new Position(x, y, heading);
     }
 }
