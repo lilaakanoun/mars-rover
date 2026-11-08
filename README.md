@@ -127,3 +127,24 @@ Open http://localhost:4200:
 The statement says nothing about the plateau edges: the front disables `M` when the rover would leave the plateau.
 
 Calls to `/missions` are proxied to the API on port 8081 (`proxy.conf.json`).
+
+## Docker
+
+Runs the API and the front, no Java or Node needed:
+
+```
+docker compose up --build
+```
+
+| Service | URL |
+|---|---|
+| Front | http://localhost:4200 |
+| API | http://localhost:8081/missions |
+| Swagger UI | http://localhost:8081/swagger-ui.html |
+
+- `api/Dockerfile`: builds the core jar then the API with Maven, runs it on a Java 11 JRE (Eclipse Temurin, Alpine)
+- `front/Dockerfile`: builds the Angular app with Node 18, serves it with nginx
+- `front/nginx.conf`: proxies `/missions` to the `api` container
+- the front starts once the API is healthy (`/actuator/health`)
+
+Stop with `docker compose down`.
