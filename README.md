@@ -148,3 +148,14 @@ docker compose up --build
 - the front starts once the API is healthy (`/actuator/health`)
 
 Stop with `docker compose down`.
+
+## CI
+
+`Jenkinsfile` stages:
+
+| Stage | Steps |
+|---|---|
+| Test | Core tests, API tests: blocking, a failing test stops the pipeline |
+| Build | Core, API, Front |
+| Docker | api and front images: syntax check, build, deploy to Artifactory |
+| Internal tools | Sonar, Fortify, Nexus |
