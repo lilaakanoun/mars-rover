@@ -63,7 +63,41 @@ java -jar target/rover.jar input.txt
 
 ```
 src/main/java/com/lilakanoun/marsrover
-├── Application.java   reads the input file and prints the result
-├── domain/            Heading, Instruction, Position, Plateau, Rover
-└── parser/            InputParser
+├── Application.java     reads the input file and prints the result
+├── MissionRunner.java   runs the rovers one after the other
+├── domain/              Heading, Instruction, Position, Plateau, Rover
+└── parser/              InputParser
+
+api/                     REST API (Spring Boot), uses mars-rover as a lib
 ```
+
+## REST API
+
+Separate Maven project in `api/`. Install the core jar first, then build the API:
+
+```
+mvn clean install
+cd api
+mvn clean verify
+java -jar target/rover-api.jar
+```
+
+`POST /missions` takes the input file as plain text:
+
+```
+curl -X POST http://localhost:8080/missions -H "Content-Type: text/plain" --data-binary @input.txt
+```
+
+```json
+{
+  "plateau": { "upperRightX": 5, "upperRightY": 5 },
+  "rovers": [
+    { "x": 1, "y": 3, "heading": "N" },
+    { "x": 5, "y": 1, "heading": "E" }
+  ]
+}
+```
+
+An unknown instruction or heading returns `400 Bad Request`.
+
+Swagger UI: http://localhost:8080/swagger-ui.html
