@@ -49,6 +49,10 @@ mvn clean verify
 
 Runs the tests and builds `target/rover.jar`.
 
+## Code coverage
+
+JaCoCo runs during `mvn verify`, the report is in `target/site/jacoco/index.html`.
+
 ## Run
 
 ```
