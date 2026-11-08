@@ -1,0 +1,99 @@
+<div class="page">
+  <h1>Mars Rover</h1>
+
+  <div class="layout">
+    <mat-card class="panel">
+      <mat-card-content>
+        <h3>Plateau</h3>
+        <div class="size">
+          <span>Width</span>
+          <button mat-icon-button (click)="resize(-1, 0)" [disabled]="busy"><mat-icon>remove</mat-icon></button>
+          <strong>{{ upperRightX }}</strong>
+          <button mat-icon-button (click)="resize(1, 0)" [disabled]="busy"><mat-icon>add</mat-icon></button>
+        </div>
+        <div class="size">
+          <span>Height</span>
+          <button mat-icon-button (click)="resize(0, -1)" [disabled]="busy"><mat-icon>remove</mat-icon></button>
+          <strong>{{ upperRightY }}</strong>
+          <button mat-icon-button (click)="resize(0, 1)" [disabled]="busy"><mat-icon>add</mat-icon></button>
+        </div>
+
+        <h3>Rover</h3>
+        <div class="start">
+          <mat-form-field appearance="outline">
+            <mat-label>x</mat-label>
+            <input matInput type="number" min="0" [max]="upperRightX" [(ngModel)]="start.x">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>y</mat-label>
+            <input matInput type="number" min="0" [max]="upperRightY" [(ngModel)]="start.y">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="heading">
+            <mat-label>Heading</mat-label>
+            <mat-select [(ngModel)]="start.heading">
+              <mat-option *ngFor="let heading of headings" [value]="heading">{{ heading }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <button mat-raised-button color="primary" (click)="deploy()" [disabled]="busy || !startIsValid()">Deploy</button>
+
+        <h3>Instructions</h3>
+        <div class="controls">
+          <button mat-stroked-button (click)="send('L')" [disabled]="busy || fileMode">
+            <mat-icon>rotate_left</mat-icon> L
+          </button>
+          <button mat-stroked-button (click)="send('M')" [disabled]="busy || fileMode || !canMove()">
+            <mat-icon>arrow_upward</mat-icon> M
+          </button>
+          <button mat-stroked-button (click)="send('R')" [disabled]="busy || fileMode">
+            R <mat-icon>rotate_right</mat-icon>
+          </button>
+        </div>
+        <div class="controls">
+          <button mat-button (click)="replay()" [disabled]="busy || fileMode || !instructions">
+            <mat-icon>replay</mat-icon> Replay
+          </button>
+          <button mat-button (click)="deploy()" [disabled]="busy">
+            <mat-icon>restart_alt</mat-icon> Reset
+          </button>
+        </div>
+
+        <p>Sent: <code>{{ instructions || '-' }}</code></p>
+        <p *ngFor="let rover of rovers">Position: <code>{{ rover.x }} {{ rover.y }} {{ rover.heading }}</code></p>
+        <p class="error" *ngIf="error">{{ error }}</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="panel">
+      <mat-card-content>
+        <div class="grid">
+          <div class="row" *ngFor="let y of rows">
+            <span class="label">{{ y }}</span>
+            <div class="cell" *ngFor="let x of columns">
+              <mat-icon *ngIf="roverAt(x, y) as rover" color="primary" [style.transform]="rotation(rover.heading)">
+                navigation
+              </mat-icon>
+            </div>
+          </div>
+          <div class="row">
+            <span class="label"></span>
+            <span class="label" *ngFor="let x of columns">{{ x }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Advanced: paste a full input file</mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-form-field appearance="outline" class="file">
+        <mat-label>Input</mat-label>
+        <textarea matInput rows="8" [(ngModel)]="fileInput"></textarea>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="runFile()" [disabled]="busy || !fileInput">Run</button>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

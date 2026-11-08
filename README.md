@@ -69,6 +69,8 @@ src/main/java/com/lilakanoun/marsrover
 └── parser/              InputParser
 
 api/                     REST API (Spring Boot), uses mars-rover as a lib
+front/                   Angular front
+docs/                    screenshots
 ```
 
 ## REST API
@@ -85,7 +87,7 @@ java -jar target/rover-api.jar
 `POST /missions` takes the input file as plain text:
 
 ```
-curl -X POST http://localhost:8080/missions -H "Content-Type: text/plain" --data-binary @input.txt
+curl -X POST http://localhost:8081/missions -H "Content-Type: text/plain" --data-binary @input.txt
 ```
 
 ```json
@@ -100,4 +102,28 @@ curl -X POST http://localhost:8080/missions -H "Content-Type: text/plain" --data
 
 An unknown instruction or heading returns `400 Bad Request`.
 
-Swagger UI: http://localhost:8080/swagger-ui.html
+Swagger UI: http://localhost:8081/swagger-ui.html
+
+## Front
+
+Angular 15 + Angular Material app in `front/`, needs Node 18. Start the API first, then:
+
+```
+cd front
+npm install
+npx ng serve
+```
+
+Open http://localhost:4200:
+
+![Front](docs/front.png)
+
+- **Plateau**: `+` / `-` to change the size
+- **Rover**: set `x`, `y`, heading, then **Deploy**
+- **Instructions**: `L`, `M`, `R` move the rover live, each click calls the API
+- **Replay**: plays the instructions again step by step, **Reset**: back to the start position
+- **Advanced**: paste a full input file and **Run** it
+
+The statement says nothing about the plateau edges: the front disables `M` when the rover would leave the plateau.
+
+Calls to `/missions` are proxied to the API on port 8081 (`proxy.conf.json`).
