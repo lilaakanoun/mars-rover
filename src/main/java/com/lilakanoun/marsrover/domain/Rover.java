@@ -33,6 +33,8 @@ public class Rover {
             case M:
                 move();
                 break;
+            default:
+                throw new IllegalStateException("unknown instruction: " + instruction);
         }
     }
 
@@ -54,6 +56,8 @@ public class Rover {
                 // facing west: go left
                 x = x - 1;
                 break;
+            default:
+                throw new IllegalStateException("unknown heading: " + heading);
         }
     }
 }
